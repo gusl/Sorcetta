@@ -206,29 +206,6 @@ run_tests(entries, inputs, "vectors")
 
 
 
-X1 = rand(Normal(0,1), 10)
-X2 = rand(Normal(0,1), 10)
-X3 = rand(Normal(0,1), 10)
-Y = X1 - X2 + rand(Normal(0,1), 10)
-df = DataFrame(Y=Y, X1=X1, X2=X2, X3=X3)
-push!(df, (1,2,3,4))
-
-
-push!(df, (1,2,3,4, "hi"))
-
-
-mf = ModelFrame(Y ~ X1 + X2, df)
-mm = ModelMatrix(ModelFrame(Y ~ X1 + X2, df))
-## how do we extract the LHS, RHS?
-
-
-function fs(formula::Formula, df::DataFrame)
-    y = df[formula.lhs]
-    X = ModelMatrix(ModelFrame(formula, df))
-end
-
-
-
 
 
 df = DataFrame()
@@ -257,57 +234,4 @@ push!(inputs, ["a" => 1e10])
 test(code1_R, code1_Julia, inputs)
 
 
-
-
-
-import Base
-
-
-function push!(df::DataFrame, arr::Array)
-    K = length(arr)
-    assert(size(df,2)==K)
-    col_types = map(eltype, eachcol(df))
-    converted = map(i -> convert(col_types[i][1], arr[i]), 1:K)
-    ## To do: throw error if convert fails
-    df2 = DataFrame(reshape(converted, 1, K))
-    names!(df2, names(df))
-    append!(df,df2)
-end
-
-function push!(df::DataFrame, tup::Tuple)
-    K = length(tup)
-    assert(size(df,2)==K)
-    col_types = map(eltype, eachcol(df))
-    converted = map(i -> convert(col_types[i][1], tup[i]), 1:K)
-    ## To do: throw error if convert fails
-    df2 = DataFrame(reshape(converted, 1, K))
-    names!(df2, names(df))
-    append!(df,df2)
-end
-
-
-using DataFrames
-
-import Base.push!
-function push!(df::DataFrame, iterable)
-    K = length(iterable)
-    assert(size(df,2)==K)
-    i=1
-    for t in iterable
-        try
-            #println(i,t, typeof(t))
-            push!(df.columns[i], t)
-        catch
-            #clean up partial row
-            for j in 1:(i-1)
-                pop!(df.columns[j])
-            end
-            msg = "Error adding $t to column $i."
-            throw(ArgumentError(msg))
-        end
-        i=i+1
-    end
-end
-
-push!(df, (2,3,4,5,"hi"))
 
