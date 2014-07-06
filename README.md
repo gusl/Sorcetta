@@ -7,7 +7,7 @@ Source-to-source translation.
 
 **Goal:** we do not expect Sorcetta to obtain 100% coverage without human assistance, but merely to speed up the process of translating code from other languages into Julia.
 
-**Dogma:** as long as the outputs agree for every input, the codes are good translations of each other.  This means that you can use any approach you like (human translation, statistical machine translation, genetic algorithms, inductive logic programming, etc), as long as the tests pass.  Note: we don't worry about mutating code just yet.
+**Dogma:** as long as the outputs agree for every valid input, the codes are good translations of each other.  This means that you can use any approach you like (human translation, statistical machine translation, genetic algorithms, inductive logic programming, etc), as long as the tests pass.  Note: we don't worry about mutating code just yet.
 
 
 Current project: R.  (Future: Matlab, Python)
@@ -17,6 +17,10 @@ Current project: R.  (Future: Matlab, Python)
 
 **Q:** when are two pieces of code good translations of each other?  i.e. when do two pieces of code compute the same function?<br>
 **A:** when they agree on every *valid* input.
+**Q:** what is valid input?
+**A:** for the purposes of Project A, an input is valid if it satisfies the precondition (i.e. the last PRE statement).
+
+For Project B, we will be testing *sequences* of lines, and will compare variable values after each line.  The precondition is only enforced at the top of the sequence. At a given line, an input is valid if it can be achieved, given the code above it.
 
 
 ## .Rjl file
@@ -26,7 +30,7 @@ Current project: R.  (Future: Matlab, Python)
 R: a+b
 J: a+b
 ```
-This tells to test whether `a+b` in R corresponds to `a+b` in Julia.  If no PRE statement is specified, then `a` and `b` will take their full range of values.  The full range of values is specified under the "Inputs" header at the bottom of the .Rjl file.
+This tells to test whether `a+b` in R corresponds to `a+b` in Julia.  If no precondition (PRE statement) is specified, then `a` and `b` will take their full range of values.  The full range of values is specified under the "Inputs" header at the bottom of the .Rjl file.
 
 
 ```
