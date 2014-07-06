@@ -3,7 +3,7 @@ Sorcetta
 
 Source-to-source translation.
 
-**Why?** because a lot of research code exists only in R, Python, Matlab.  One can interface with other languages through using e.g. PyCall, but it is preferable to have the code translated to Julia (for performance reasons if nothing else).  Since human translation is slow and burdensome, automated translation may be a good alternative.
+**Why?** because a lot of research code exists only in R, Python, Matlab.  One can interface with other languages by using e.g. PyCall, but in this case, it is preferable to have the Python code translated to Julia (for performance reasons if nothing else).  Since human translation is slow and burdensome, automated translation may be a good alternative.
 
 **Goal:** we do not expect Sorcetta to obtain 100% coverage without human assistance, but merely to speed up the process of translating code from other languages into Julia.
 
@@ -27,6 +27,12 @@ R: a+b
 J: a+b
 ```
 This tells to test whether `a+b` in R corresponds to `a+b` in Julia.  If no PRE statement is specified, then `a` and `b` will take their full range of values.  The full range of values is specified under the "Inputs" header at the bottom of the .Rjl file.
+
+
+```
+a::Real -1.0, 0.0, 1.0, 5.0, 1e10, Inf
+b::Real -1.0, 0.0, 1.0, 5.0, 1e10, Inf
+```
 
 A blank line is required between tests.
 
@@ -53,8 +59,7 @@ This specifies which libraries need to be loaded before tests are run.  For R, t
 
 * R identifiers may not be valid Julia identifiers, e.g. anything containing `.`.
 
-* Dependencies
-
+* Type annotation: R code is not type-annotated, but to obtain good performance, Julia requires type annotation.  We could extend
 
 
 ## How to run
