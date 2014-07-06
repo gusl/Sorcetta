@@ -1,9 +1,11 @@
 Sorcetta
 ========
 
-Source-to-source translation.
+Source-to-source translation to enrich Julia libraries.
 
-Currently: R to Julia.  (Future: Matlab, Python)
+Goal: we do not expect to obtain 100\% coverage, but merely to speed up the process of translating code from other languages into Julia.
+
+Current state: R.  (Future: Matlab, Python)
 
 # Project A: automatic test generation
 
