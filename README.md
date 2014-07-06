@@ -44,7 +44,7 @@ R:
 J: Distributions
 ```
 
-This specifies which libraries need to be loaded before tests are run.  For R, .  For Julia, it will call `using Distributions`.
+This specifies which libraries need to be loaded before tests are run.  For R, the Base package is enough.  For Julia, it will call `using Distributions`.
 
 
 ## Issues
