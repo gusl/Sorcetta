@@ -3,9 +3,9 @@ Sorcetta
 
 Source-to-source translation to enrich Julia libraries.
 
-Goal: we do not expect to obtain 100% coverage, but merely to speed up the process of translating code from other languages into Julia.
+**Goal:** we do not expect to obtain 100% coverage, but merely to speed up the process of translating code from other languages into Julia.
 
-Idea: as long as the codes agree on every input, they are good translation.  This means that you can use any approach you like (genetic algorithms, inductive logic programming, etc), as long as the tests pass.
+**Idea:** as long as the codes agree on every input, they are good translations of each other.  This means that you can use any approach you like (genetic algorithms, inductive logic programming, etc), as long as the tests pass.
 
 
 Current project: R.  (Future: Matlab, Python)
