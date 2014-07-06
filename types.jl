@@ -1,8 +1,10 @@
 module T
 
 type Entry
-    R::String
-    J::String
+    J::String ## Julia
+    M::String ## Matlab
+    P::String ## Python
+    R::String ## R
     precond::String
 end
 

@@ -1,5 +1,4 @@
 == Code ==
-PRE: typeof(a)<:Real && typeof(b)<:Real
 R: a+b
 J: a+b
 
@@ -12,16 +11,16 @@ J: a*b
 R: a/b
 J: a/b
 
-PRE: typeof(a)<:Real && typeof(b)<:Real && (a>=0 || b>=0) && abs(b)<Inf
+PRE: (a>=0 || b>=0) && abs(b)<Inf
 R: a^b
 J: a^b
 
-PRE: typeof(a)<:Real && typeof(b)<:Real && a>=0
+PRE: a>=0
 R: sqrt(a)
 J: sqrt(a)
 
 == Inputs ==
-a: -1.0, 0.0, 1.0, 5.0, 1e10, Inf
-b: -1.0, 0.0, 1.0, 5.0, 1e10, Inf
+a::Real -1.0,0.0,1.0,5.0,1e10,Inf
+b::Real -1.0,0.0,1.0,5.0,1e10,Inf
 
 == end ==

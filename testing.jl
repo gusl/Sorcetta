@@ -25,7 +25,7 @@ function eval_R_code(R_code::ASCIIString, convert_fun=identity)
     output
 end
 
-R_out = eval_R_code("a<-1; a+1", int)
+## R_out = eval_R_code("a<-1; a+1", int)
 
 
 function bind_vars(dict, expr::String)
@@ -41,7 +41,7 @@ dict = ["a" => 1]
 bind_vars(dict, "a+1")
 
 
-## compare R computation with Julia computation on every
+## compare R computation with Julia computation on every input
 function test(R_code::String, Julia_code::String, input::Dict)
     num_pass = 0;
     dict = input
@@ -112,7 +112,7 @@ function read_Rjl(filename::String)
         end
         if(section=="code")
             if (nline=="")
-                push!(entries, T.Entry(R,J,precond))
+                push!(entries, T.Entry(R,J,"","",precond))
                 R = ""; J = "";
             elseif (is_code(line))
                 lang = line[1:1]
@@ -128,7 +128,7 @@ function read_Rjl(filename::String)
             end
         end
         if(section=="inputs" && nline!="")
-            ss = split(nline, ":")
+            ss = split(line, " ")
             println("ss = $ss")
             var = ss[1]
             valString = ss[2]
@@ -154,9 +154,7 @@ function bind_and_eval(precond, dict)
     eval(parse(bound_precond))
 end
 
-bind_and_eval("a+b", dict)
-
-precond = "a+b"
+## bind_and_eval("a+b", dict)
 
 
 
