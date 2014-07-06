@@ -1,7 +1,9 @@
 Sorcetta
 ========
 
-Source-to-source translation to enrich Julia libraries.
+Source-to-source translation.
+
+**Why?** because a lot of research code exists only in R, Python, Matlab.  One can interface with other languages through using e.g. PyCall, but it is preferable to have the code translated to Julia (for performance reasons if nothing else).  Since human translation is slow and burdensome, automated translation may be a good alternative.
 
 **Goal:** we do not expect to obtain 100% coverage, but merely to speed up the process of translating code from other languages into Julia.
 
