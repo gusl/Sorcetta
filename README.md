@@ -7,7 +7,7 @@ Currently: R to Julia.  (Future: Matlab, Python)
 
 # Project A: automatic test generation
 
-## .Rjl file: 
+## .Rjl file
 
 ```
 R: a+b
@@ -27,4 +27,14 @@ J: sqrt(a)
 The PRE statement restricts the range of values, and propagates downwards.  To reset to default state, one can use `PRE: true`.  The above block tells to test whether "sqrt(a)" in R corresponds to "sqrt(a)" in Julia, but only for non-negative values of `a`.
 
 
-# Project B: web application to collect human translations from R to Julia, using Project A to provide feedback.
+# Project B: web application to collect human translations
+
+Ruby on Rails?
+
+## Plan
+
+* interface showing R code, side-by-side with Julia code, aligned by line
+
+* use Project A to judge correctness of translations.
+
+
