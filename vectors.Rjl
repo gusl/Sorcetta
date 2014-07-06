@@ -1,0 +1,29 @@
+== Code ==
+PRE: true
+R: a+b
+J: a+b
+
+R: a-b
+J: a-b
+
+R: a*b
+J: a.*b
+
+R: c(a,b)
+J: [a b]
+
+R: sapply(a,f)
+J: map(f,a)
+
+R: Reduce(g, a)
+J: reduce(g, a)
+
+
+== Inputs ==
+a: [-1.0, 0.0], [1.0, 5.0]
+b: [-1.0 1.0], [0.0 0.0]
+c: [], [1.0]
+f: square, add_one
+g: sum, concat
+
+== end ==
