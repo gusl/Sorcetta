@@ -25,7 +25,7 @@ Current project: R.  (Future: Matlab, Python)
 R: a+b
 J: a+b
 ```
-This tells to test whether `a+b` in R corresponds to `a+b` in Julia, with `a` and `b` taking their full range of values.  The range of values is specified under the "Inputs" header at the bottom of the .Rjl file.
+This tells to test whether `a+b` in R corresponds to `a+b` in Julia.  If no PRE statement is specified, then `a` and `b` will take their full range of values.  The full range of values is specified under the "Inputs" header at the bottom of the .Rjl file.
 
 A blank line is required between tests.
 
