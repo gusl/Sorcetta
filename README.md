@@ -16,8 +16,8 @@ Current project: R.  (Future: Matlab, Python)
 # Project A: automatic test generation
 
 **Q:** when are two pieces of code good translations of each other?  i.e. when do two pieces of code compute the same function?<br>
-**A:** when they agree on every *valid* input.
-**Q:** what is valid input?
+**A:** when they agree on every *valid* input.<br>
+**Q:** what is valid input?<br>
 **A:** for the purposes of Project A, an input is valid if it satisfies the precondition (i.e. the last PRE statement).
 
 For Project B, we will be testing *sequences* of lines, and will compare variable values after each line.  The precondition is only enforced at the top of the sequence. At a given line, an input is valid if it can be achieved, given the code above it.
