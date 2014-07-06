@@ -13,8 +13,8 @@ Current project: R.  (Future: Matlab, Python)
 
 # Project A: automatic test generation
 
-Q: when are two pieces of code good translations of each other?  i.e. when do two pieces of code compute the same function?
-A: when they agree on every *valid* input.
+**Q:** when are two pieces of code good translations of each other?  i.e. when do two pieces of code compute the same function?<br>
+**A:** when they agree on every *valid* input.
 
 
 
