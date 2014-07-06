@@ -5,9 +5,9 @@ Source-to-source translation.
 
 **Why?** because a lot of research code exists only in R, Python, Matlab.  One can interface with other languages through using e.g. PyCall, but it is preferable to have the code translated to Julia (for performance reasons if nothing else).  Since human translation is slow and burdensome, automated translation may be a good alternative.
 
-**Goal:** we do not expect to obtain 100% coverage, but merely to speed up the process of translating code from other languages into Julia.
+**Goal:** we do not expect Sorcetta to obtain 100% coverage without human assistance, but merely to speed up the process of translating code from other languages into Julia.
 
-**Idea:** as long as the outputs agree for every input, the codes are good translations of each other.  This means that you can use any approach you like (human translation, genetic algorithms, inductive logic programming, etc), as long as the tests pass.  Note: we don't worry about mutating code just yet.
+**Dogma:** as long as the outputs agree for every input, the codes are good translations of each other.  This means that you can use any approach you like (human translation, statistical machine translation, genetic algorithms, inductive logic programming, etc), as long as the tests pass.  Note: we don't worry about mutating code just yet.
 
 
 Current project: R.  (Future: Matlab, Python)
