@@ -34,6 +34,7 @@ This tells to test whether `a+b` in R corresponds to `a+b` in Julia.  If no prec
 
 
 ```
+== Inputs ==
 a::Real -1.0, 0.0, 1.0, 5.0, 1e10, Inf
 b::Real -1.0, 0.0, 1.0, 5.0, 1e10, Inf
 ```
