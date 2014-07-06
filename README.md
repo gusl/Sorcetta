@@ -20,7 +20,7 @@ Current project: R.  (Future: Matlab, Python)
 **Q:** what is valid input?<br>
 **A:** for the purposes of Project A, an input is valid if it satisfies the precondition (i.e. the last PRE statement).
 
-For Project B, we will be testing *sequences* of lines, and will compare variable values after each line.  The precondition is only enforced at the top of the sequence. At a given line, an input is valid if it can be achieved, given the code above it.
+For Project B, we will be testing *sequences* of lines, and will compare variable values after each line.  The precondition is only enforced at the top of the sequence. At a given line, an input is valid if it can be achieved, given the code above it and the precondition at the top.
 
 
 ## .Rjl file
@@ -61,14 +61,14 @@ This specifies which libraries need to be loaded before tests are run.  For R, t
 
 ## Issues
 
-* R identifiers may not be valid Julia identifiers, e.g. anything containing `.`.
+* Some R identifiers are not valid Julia identifiers, e.g. anything containing `.`.
 
-* Type annotation: R code is not type-annotated, but to obtain good performance, Julia requires type annotation.  We could extend
+* Type annotation: R code is not type-annotated, but to obtain good performance, Julia requires type annotation.  Under the `==Inputs==` header, one can specify a Julia type for each variable.
 
 
 ## How to run
 
-
+...
 
 
 # Project B: web application to collect parallel corpus from humans
