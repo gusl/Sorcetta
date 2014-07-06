@@ -30,7 +30,7 @@ For Project B, we will be testing *sequences* of lines, and will compare variabl
 R: a+b
 J: a+b
 ```
-This tells to test whether `a+b` in R corresponds to `a+b` in Julia.  If no precondition (PRE statement) is specified, then `a` and `b` will take their full range of values.  The full range of values is specified under the "Inputs" header at the bottom of the .Rjl file.
+This tells to test whether `a+b` in R corresponds to `a+b` in Julia.  If no precondition (PRE statement) is specified, then `a` and `b` will take their full range of values.  The full range of values is specified under the "Inputs" header.
 
 
 ```
