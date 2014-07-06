@@ -17,11 +17,10 @@ Current project: R.  (Future: Matlab, Python)
 **A:** when they agree on every *valid* input.
 
 
-
-
 ## .Rjl file
 
 ```
+== Code ==
 R: a+b
 J: a+b
 ```
@@ -39,9 +38,20 @@ J: sqrt(a)
 The PRE statement restricts the range of values, and propagates downwards.  To reset to default state, one can use `PRE: true`. Likewise `PRE: false` will cause tests to be skipped until the next PRE statement.  The above block tells to test whether `sqrt(a)` in R corresponds to `sqrt(a)` in Julia, but only for non-negative values of `a`.
 
 
+```
+== Libraries ==
+R: 
+J: Distributions
+```
+
+This specifies which libraries need to be loaded before tests are run.  For R, .  For Julia, it will call `using Distributions`.
+
+
 ## Issues
 
 * R identifiers may not be valid Julia identifiers, e.g. anything containing `.`.
+
+* Dependencies
 
 
 
