@@ -5,7 +5,7 @@ Source-to-source translation to enrich Julia libraries.
 
 **Goal:** we do not expect to obtain 100% coverage, but merely to speed up the process of translating code from other languages into Julia.
 
-**Idea:** as long as the codes agree on every input, they are good translations of each other.  This means that you can use any approach you like (human translation, genetic algorithms, inductive logic programming, etc), as long as the tests pass.
+**Idea:** as long as the outputs agree for every input, the codes are good translations of each other.  This means that you can use any approach you like (human translation, genetic algorithms, inductive logic programming, etc), as long as the tests pass.  Note: we don't worry about mutating code just yet.
 
 
 Current project: R.  (Future: Matlab, Python)
@@ -37,6 +37,17 @@ J: sqrt(a)
 ```
 
 The PRE statement restricts the range of values, and propagates downwards.  To reset to default state, one can use `PRE: true`. Likewise `PRE: false` will cause tests to be skipped until the next PRE statement.  The above block tells to test whether `sqrt(a)` in R corresponds to `sqrt(a)` in Julia, but only for non-negative values of `a`.
+
+
+## Issues
+
+* R identifiers may not be valid Julia identifiers, e.g. anything containing `.`.
+
+
+
+## How to run
+
+
 
 
 # Project B: web application to collect parallel corpus from humans
