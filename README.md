@@ -53,7 +53,7 @@ The PRE statement restricts the range of values, and propagates downwards.  To r
 
 ```
 == Libraries ==
-R: 
+R:
 J: Distributions
 ```
 
@@ -63,8 +63,6 @@ This specifies which libraries need to be loaded before tests are run.  For R, t
 ## Issues
 
 * Some R identifiers are not valid Julia identifiers, e.g. anything containing `.`.
-
-* Type annotation: R code is not type-annotated, but to obtain good performance, Julia requires type annotation.  Under the `==Inputs==` header, one can specify a Julia type for each variable.
 
 
 ## How to run
