@@ -100,60 +100,60 @@ end
 ## end
 
 remove_spaces(s) = replace(replace(s, " ",""), "\n", "")
-is_code(s) = length(s)>2 && s[2:3]==": "
+is_code(s) = length(s)>2 && s[2:3]==": " && s[1]!="#"
 is_precondition(s) = length(s)>4 && s[1:4]=="PRE:"
 
-## load
-function read_Rjl(filename::String)
-    f=open("$filename.Rjl")
-    entries=T.Entry[]
-    inputs=T.Input[]
-    line = nothing; section=nothing;
-    R=""; J=""; precond="";
-    ##Entries
-    while true
-        line=readline(f)
-        if section=="end"
-            break
-        end
-        println(line)
-        nline=remove_spaces(line)
-        if(length(nline)>2 && nline[1:2]=="==")
-            section=lowercase(replace(nline,"==",""))
-            continue
-        end
-        if(section=="code")
-            if (nline=="")
-                push!(entries, T.Entry(R,J,"","",precond))
-                R = ""; J = "";
-            elseif (is_code(line))
-                lang = line[1:1]
-                code = nline[3:end]
-                if (lang=="R")
-                    R = code
-                end
-                if (lang=="J")
-                    J = code
-                end
-            elseif (is_precondition(line))
-                precond = replace(nline, "PRE:", "")
-            end
-        end
-        if(section=="inputs" && nline!="")
-            ss = split(line, " ")
-            println("ss = $ss")
-            var = ss[1]
-            valString = ss[2]
-            println("valString = $valString")
-            vals = split(valString, ",")
-            push!(inputs, T.Input(var,vals))
-        end
-        println("entries = $entries")
-        println("inputs = $inputs")
-    end
-    ## Inputs
-    (entries, inputs)
-end
+## ## load
+## function read_Rjl(filename::String)
+##     f=open("$filename.Rjl")
+##     entries=T.Entry[]
+##     inputs=T.Input[]
+##     line = nothing; section=nothing;
+##     R=""; J=""; precond="";
+##     ##Entries
+##     while true
+##         line=readline(f)
+##         if section=="end"
+##             break
+##         end
+##         println(line)
+##         nline=remove_spaces(line)
+##         if(length(nline)>2 && nline[1:2]=="==")
+##             section=lowercase(replace(nline,"==",""))
+##             continue
+##         end
+##         if(section=="code")
+##             if (nline=="")
+##                 push!(entries, T.Entry(R,J,"","",precond))
+##                 R = ""; J = "";
+##             elseif (is_code(line))
+##                 lang = line[1:1]
+##                 code = nline[3:end]
+##                 if (lang=="R")
+##                     R = code
+##                 end
+##                 if (lang=="J")
+##                     J = code
+##                 end
+##             elseif (is_precondition(line))
+##                 precond = replace(nline, "PRE:", "")
+##             end
+##         end
+##         if(section=="inputs" && nline!="")
+##             ss = split(line, " ")
+##             println("ss = $ss")
+##             var = ss[1]
+##             valString = ss[2]
+##             println("valString = $valString")
+##             vals = split(valString, ",")
+##             push!(inputs, T.Input(var,vals))
+##         end
+##         println("entries = $entries")
+##         println("inputs = $inputs")
+##     end
+##     ## Inputs
+##     (entries, inputs)
+## end
 
 
 function read_JMPR(filename::String)
@@ -175,7 +175,7 @@ function read_JMPR(filename::String)
             continue
         end
         if(section=="code")
-            if (nline=="")
+            if (nline=="" && J*M*P*R!="")
                 push!(entries, T.Entry(J,M,P,R,precond))
                 J = ""; M = ""; P = ""; R = "";
             elseif (is_code(line))
@@ -248,16 +248,16 @@ function run_test(entry::T.Entry, vars, vals, langs)
 end
 
 
-function run_tests(entries, inputs, outfile)
+function run_tests(entries, inputs, outfile, langs::Set)
     ## create comprehension
     vars = map(input->input.var, inputs)
     valss = map(input->input.vals, inputs)
     f = open("$outfile.out", "w")
-    for entry = entries
+    for entry in entries
         for vals in apply(Iterators.product, valss)
             println(entry)
             println(vals) ##bind_vars()
-            outcome = run_test(entry, vars, vals)
+            outcome = run_test(entry, vars, vals, langs)
             ## write output file
             out_line = "$(entry.R) ;; $(entry.J) ;; $vals ;; $outcome"
             println(f, out_line)
@@ -268,7 +268,8 @@ end
 
 
 (entries,inputs) = read_JMPR("arith")
-run_tests(entries, inputs, "arith")
+langs = Set({"R","J"})
+run_tests(entries, inputs, "arith", langs)
 
 
 
