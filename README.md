@@ -81,3 +81,10 @@ Ruby on Rails?
 * use Project A to judge correctness of translations.
 
 
+== R-to-Julia glossaries ==
+
+https://github.com/johnmyleswhite/JuliaVsR/blob/master/vocab.csv
+
+http://gustavolacerda.livejournal.com/1191381.html
+
+== Python-to-Julia glossaries ==
