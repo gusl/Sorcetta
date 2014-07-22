@@ -8,6 +8,9 @@
 ## (5) arrays, tuples
 
 
+## ToDo: each entry is a Dict from language id to code.
+
+
 include("types.jl")
 require("Iterators")
 using PyCall
@@ -28,25 +31,83 @@ function eval_R_code(R_code::ASCIIString, convert_fun=identity)
     output
 end
 
-## R_out = eval_R_code("a<-1; a+1", int)
 
-function bind_vars(dict, expr::String, translate_fn=identity)
-    for key = collect(keys(dict))
-        val = translate_fn(dict[key])
-        ##exp = parse(expr)
-        expr = replace(expr, key, "($val)")
-    end
-    expr
+## finite state machine, character by character
+## words =
+## reduce(append, words)
+
+function is_alphanumeric(ch::Char)
+    n = int(ch)
+    (48 <= n <= 57) | (65 <= n <= 90) | (97 <= n <= 122) | (n==95) ## _ is 95
 end
 
-dict = ["a" => 1]
-bind_vars(dict, "a+1")
+## STATES: 1 => alphanumeric, 2 => not
+function parse_expression(expr::String)
+    prev_state = 0
+    state = 0
+    curr = "" ## current string
+    ss = [String[]]
+    for i in 1:length(expr)
+        ch = expr[i]
+        prev_state = state
+        state = is_alphanumeric(ch) ? 1 : 2
+        if (state==prev_state)
+            curr *= string(ch)
+        else
+            if curr!="" push!(ss, curr) end
+            curr = string(ch)
+        end
+    end
+    if curr!="" push!(ss, curr) end  ## push last one
+    ss
+end
+
+## replace all instances
+function replaceall!(arr::Array, s, r)
+    for i in 1:length(arr)
+        if arr[i]==s
+            arr[i] = r
+        end
+    end
+    arr
+end
+
+
+function bind_identifiers(expr, d::Dict)
+    pexp = parse_expression(expr)
+    for key in keys(d)
+        replaceall!(pexp, key, "("*d[key]*")")
+    end
+    reduce(*, pexp)
+end
+
+expr = "a-b"
+d = {"a"=>"1", "b" => "-1"}
+bind_identifiers(expr, d)
+
+
+## R_out = eval_R_code("a<-1; a+1", int)
+
+## only replace full alphanumeric words
+function bind_vars(dict, expr::String, translate_fn=identity)
+    pexp = parse_expression(expr)
+    for key in keys(dict)
+        replaceall!(pexp, key, "("*translate_fn(dict[key])*")")
+    end
+    reduce(*, pexp)
+end
+
+
+dict = ["a" => "-1", "b" => "Inf"]
+bind_vars(dict, "a+b")
 
 python_literals = {"Inf" => "float('inf')"}
 python_literals["Inf"]
 function translate_literal_to_python(literal)
     (literal in keys(python_literals)) ? python_literals[literal] : literal
 end
+
+bind_vars(dict, "a+b", translate_literal_to_python)
 
 
 remove_spaces(s) = replace(replace(s, " ",""), "\n", "")
@@ -111,7 +172,6 @@ function read_JMPR(filename::String)
 end
 
 
-
 function bind_and_eval(precond, dict)
     s = ""
     for key = collect(keys(dict))
@@ -123,21 +183,20 @@ function bind_and_eval(precond, dict)
     eval(parse(bound_precond))
 end
 
-## bind_and_eval("a+b", dict)
 
-
-input = {:a=>1, :b=>1}
-J="a+b"
-
-## compare R computation with Julia computation on every input
+## run code in every language
 function test(J::String, M::String, P::String, R::String, input::Dict)
     num_pass = 0;
-    outputs = String[]
+    outs = Dict()
+    outputs = Dict() ##outputs = String[]
     if J!=""
         Julia_code_bound = bind_vars(input, J)
+        println("Julia_code_bound = $Julia_code_bound")
         julia_out = eval(parse(Julia_code_bound))
         println("julia_out = $julia_out")
-        push!(outputs, "$julia_out")
+        ##push!(outputs, "$julia_out")
+        outs["J"] = julia_out
+        outputs["J"] = "$julia_out"
     end
     if P!=""
         python_code_bound = bind_vars(input, P, translate_literal_to_python)
@@ -148,24 +207,30 @@ function test(J::String, M::String, P::String, R::String, input::Dict)
             "PythonError"
         end
         println("python_out = $python_out")
-        push!(outputs, "$python_out")
+        ##push!(outputs, "$python_out")
+        outs["P"] = python_out
+        outputs["P"] = "$python_out"
     end
     if R!=""
         R_code_bound = bind_vars(input, R)
         R_out = eval_R_code(R_code_bound)
         R_out = eval(parse(R_out))
         println("R_out = $R_out")
-        push!(outputs, "$R_out")
+        ##push!(outputs, "$R_out")
+        outs["R"] = R_out
+        outputs["R"] = "$R_out"
     end
-    pass = isequal(R_out, julia_out) || R_out==julia_out
+    pass = length(unique(values(outputs)))==1 || length(unique(values(outs)))==1 ## i.e. all outputs are equal
+    ##        (isequal(julia_out, R_out) || R_out==julia_out) && (isequal(julia_out, python_out) || R_out==python_out)     ##if ("$R_out"=="$julia_out") ## string equality, viz NaN
     if pass
-    ##if ("$R_out"=="$julia_out") ## string equality, viz NaN
         println("Passed")
     else
         println("Failed")
     end
     (outputs, pass)
 end
+
+## implement 'unique' for different notions of equality
 
 
 function run_test(entry::T.Entry, vars, vals, langs::Set)
@@ -210,7 +275,7 @@ function run_tests(entries, inputs, outfile, langs::Set)
                 out_line *= getfield(entry, symbol(lang))*" ;; "
             end
             out_line *= " $vals ;;"
-            for output in outputs
+            for output in values(outputs)
                 out_line *= " $output ;; "
             end
             out_line *= "$outcome"
